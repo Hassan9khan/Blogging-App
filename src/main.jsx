@@ -4,11 +4,11 @@ import App from "./App.jsx";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./Layout.jsx";
-import Login from "./components/Login.jsx";
-import Register from "./components/Register.jsx";
-import Dashboard from "./components/Dashboard.jsx";
-import Allblogs from "./components/Allblogs.jsx";
-import Profile from "./components/Profile.jsx";
+import Login from "./pages/Login.jsx";
+import Register from "./pages/Register.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import Allblogs from "./pages/Allblogs.jsx";
+import Profile from "./pages/Profile.jsx";
 
 const router = createBrowserRouter([
   {
