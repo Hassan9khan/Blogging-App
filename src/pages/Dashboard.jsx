@@ -7,6 +7,7 @@
 //   doc,
 //   updateDoc,
 //   deleteField,
+//   deleteDoc,
 // } from "firebase/firestore";
 // import { db } from "../config/config";
 
@@ -19,42 +20,34 @@
 //     formState: { errors },
 //   } = useForm();
 
+//   const newDate = new Date();
+
 //   const [blogs, setBlogs] = useState([]);
 
 //   const onSubmit = async (data) => {
 //     console.log(data);
-//     blogs.push(data);
-//     setBlogs(blogs);
 //     const docRef = await addDoc(collection(db, "blogs"), {
 //       title: data.title,
 //       description: data.description,
 //       createdAt: newDate.toLocaleString(),
 //     });
+//     const newBlog ={
+//       title: data.title,
+//       description: data.description,
+//       docId: docRef.id
+//     }
+//     setBlogs([...blogs , newBlog])
 //     console.log("Document written with ID: ", docRef.id);
-    
+
 //   };
-
-  
-
-//   // const deleteBlog = async (index) => {
-//   //   console.log("delete todo", index);
-//   //   blogs.splice(index, 1);
-//   //   setBlogs([...blogs]);
-
-//   //   const cityRef = doc(db, "cities", "BJ");
-
-//   //   await updateDoc(cityRef, {
-//   //     capital: deleteField(),
-//   //   });
-//   // };
-
 
 //   const deleteBlog = async (index, docId) => {
 //     console.log("Deleting blog at index", index);
 //     if (!docId) {
-//         console.error("Document ID is undefined");
+//       console.error("Document ID is undefined");
 //         return;
 //     }
+
 //     blogs.splice(index, 1);
 //     setBlogs([...blogs]);
 //     try {
@@ -66,23 +59,92 @@
 //     }
 // };
 
+// const editBlog = async (item) => {
+//   // Prompt to get the new title and description from the user
+//   const newTitle = prompt("Enter new title", item.title);
+//   const newDescription = prompt("Enter new description", item.description);
 
+//   // Check if user input is valid (not null or empty)
+//   if (newTitle && newDescription) {
+//     try {
+//       // Reference to the specific blog document in Firestore
+//       const blogRef = doc(db, "blogs", item.docId);
 
+//       // Update the Firestore document with the new title and description
+//       await updateDoc(blogRef, {
+//         title: newTitle,
+//         description: newDescription,
+//       });
 
+//       // Update the local state to reflect the changes
+//       setBlogs(blogs.map(blog =>
+//         blog.docId === item.docId
+//           ? { ...blog, title: newTitle, description: newDescription }  // Update in local state
+//           : blog
+//       ));
+
+//       console.log("Blog updated successfully");
+//     } catch (error) {
+//       console.error("Error updating blog in Firestore: ", error);
+//     }
+//   } else {
+//     console.log("Edit canceled or invalid input.");
+//   }
+// };
+
+// // const editBlog = (item) => {
+// //   const newTitle = prompt("Enter new title", item.title);
+// //   const newDescription = prompt("Enter new description", item.description);
+
+// //   if (newTitle && newDescription) {
+// //     setItem({
+// //       title: newTitle,
+// //       description: newDescription,
+// //     });
+// //   } else {
+// //     console.log("Edit canceled or invalid input.");
+// //   }
+
+// // };
 
 //   // const editBlog = (index) => {
 //   //   console.log("blog edit" , index);
 //   //   const newValue = prompt("enter new value")
-//   //   if (item) {
-//   //     item.title: prompt
-//   //     item.description: prompt
-//   //     return
+//   //   if (blogs) {
+//   //     title: newValue
+//   //   }else{
+//   //     <h1>edited</h1>
 //   //   }
 //   //   blogs.splice(index , 1 , newValue)
 //   //   setBlogs([...blogs]);
 //   // }
 
-//   const newDate = new Date();
+
+// useEffect(() => {
+    // async function recieve() {
+    //   const docRef = doc(db, "blogs", "SF");
+    //   const docSnap = await getDoc(docRef);
+
+    //   if (docSnap.exists()) {
+    //     console.log("Document data:", docSnap.data());
+    //   } else {
+    //     console.log("No such document!");
+    //   }
+    // }
+  // }, []);
+  // recieve();
+
+  // const receive = async (docId) => {
+  //   const docRef = doc(db, "blogs", docId ); // Replace "SF" with the actual document ID you want to fetch
+  //   const docSnap = await getDoc(docRef);
+
+  //   if (docSnap.exists()) {
+  //     console.log("Document data:", docSnap.data());
+  //   } else {
+  //     console.log("No such document!");
+  //   }
+  // };
+
 
 //   return (
 //     <>
@@ -126,7 +188,7 @@
 //       {blogs ? (
 //         blogs.map((item , index) => {
 //           return (
-//             <div key={item.index} className="flex justify-center  pb-5 ">
+//             <div key={index} className="flex justify-center  pb-5 ">
 //               <div className="w-[85%] h-max m-1 p-5  rounded-lg bg-white border border-[#d1c7c7] shadow-md shadow-[#978d8d]">
 //                 <div className="flex">
 //                   <img
@@ -148,7 +210,7 @@
 //                   <p>{item.description}</p>
 //                   <div className="flex gap-3 mt-3">
 //                     <button
-//                       onClick={() => deleteBlog(index)}
+//                       onClick={() => deleteBlog(index , item.docId)}
 //                       className="text-[#0079ff] font-bold"
 //                     >
 //                       Delete
@@ -173,6 +235,8 @@
 // };
 
 // export default Dashboard;
+
+
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import { useForm } from "react-hook-form";
@@ -180,6 +244,7 @@ import {
   collection,
   addDoc,
   doc,
+  updateDoc,
   deleteDoc,
 } from "firebase/firestore";
 import { db } from "../config/config";
@@ -192,31 +257,32 @@ const Dashboard = () => {
     formState: { errors },
   } = useForm();
 
+  const newDate = new Date();
   const [blogs, setBlogs] = useState([]);
 
-  // Add new blog and store docId
+  // Function to handle new blog submission
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      const docRef = await addDoc(collection(db, "blogs"), {
+        title: data.title,
+        description: data.description,
+        createdAt: newDate.toLocaleString(),
+      });
 
-    // Add blog to Firestore and get the document ID
-    const docRef = await addDoc(collection(db, "blogs"), {
-      title: data.title,
-      description: data.description,
-      createdAt: new Date().toLocaleString(),
-    });
+      const newBlog = {
+        title: data.title,
+        description: data.description,
+        docId: docRef.id,
+      };
 
-    // Add the new blog with its docId to the state
-    const newBlog = {
-      title: data.title,
-      description: data.description,
-      docId: docRef.id, // Store docId for deletion
-    };
-
-    setBlogs([...blogs, newBlog]); // Update state with new blog
-    console.log("Document written with ID: ", docRef.id);
+      setBlogs([...blogs, newBlog]);
+      console.log("Document written with ID: ", docRef.id);
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
   };
 
-  // Delete blog from both UI and Firestore
+  // Function to delete a blog
   const deleteBlog = async (index, docId) => {
     console.log("Deleting blog at index", index);
     if (!docId) {
@@ -224,15 +290,12 @@ const Dashboard = () => {
       return;
     }
 
-    // Remove the blog from the local state
-    const updatedBlogs = [...blogs];
-    updatedBlogs.splice(index, 1); // Remove blog at the given index
-    setBlogs(updatedBlogs); // Update state
+    // Remove from local state
+    blogs.splice(index, 1);
+    setBlogs([...blogs]);
 
     try {
-      // Reference to the specific blog document in Firestore
       const blogRef = doc(db, "blogs", docId);
-      // Delete the document from Firestore
       await deleteDoc(blogRef);
       console.log("Blog deleted from Firestore successfully");
     } catch (error) {
@@ -240,7 +303,40 @@ const Dashboard = () => {
     }
   };
 
-  const newDate = new Date();
+  // Function to edit a blog
+  const editBlog = async (item) => {
+    const newTitle = prompt("Enter new title", item.title);
+    const newDescription = prompt("Enter new description", item.description);
+
+    // Check if the user input is valid
+    if (newTitle && newDescription) {
+      try {
+        // Firestore reference to the specific blog document
+        const blogRef = doc(db, "blogs", item.docId);
+
+        // Update the document in Firestore
+        await updateDoc(blogRef, {
+          title: newTitle,
+          description: newDescription,
+        });
+
+        // Update the local state to reflect the changes
+        setBlogs(
+          blogs.map((blog) =>
+            blog.docId === item.docId
+              ? { ...blog, title: newTitle, description: newDescription } // Update local state
+              : blog
+          )
+        );
+
+        console.log("Blog updated successfully");
+      } catch (error) {
+        console.error("Error updating blog in Firestore: ", error);
+      }
+    } else {
+      console.log("Edit canceled or invalid input.");
+    }
+  };
 
   return (
     <>
@@ -261,7 +357,7 @@ const Dashboard = () => {
             <textarea
               cols="145"
               rows="2"
-              className="textarea textarea-secondary mt-4  w-[100%]"
+              className="textarea textarea-secondary mt-4 w-[100%]"
               placeholder="Description..."
               {...register("description")}
               required
@@ -271,9 +367,9 @@ const Dashboard = () => {
             <br />
             <button
               type="submit"
-              className="btn btn-primary rounded-xl  flex flex-start bg-[#0079ff] text-white"
+              className="btn btn-primary rounded-xl flex flex-start bg-[#0079ff] text-white"
             >
-              Publish Blogs
+              Publish Blog
             </button>
           </form>
         </div>
@@ -282,44 +378,49 @@ const Dashboard = () => {
       <h1 className="text-3xl font-bold m-6">My Blogs</h1>
 
       {blogs.length > 0 ? (
-        blogs.map((item, index) => (
-          <div key={index} className="flex justify-center  pb-5 ">
-            <div className="w-[85%] h-max m-1 p-5  rounded-lg bg-white border border-[#d1c7c7] shadow-md shadow-[#978d8d]">
-              <div className="flex">
-                <img
-                  className="border-2 border-[#aca7a7] rounded-xl p-1"
-                  width="50px"
-                  height="80px"
-                  src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                  alt="loading"
-                />
-                <div className="ml-6">
-                  <p className="text-lg font-bold">{item.title}</p>
-                  <div className="flex text-sm font-semibold">
-                    <p>Hassan Ahmed | </p>
-                    <p>| {newDate.toLocaleString()}</p>
+        blogs.map((item, index) => {
+          return (
+            <div key={index} className="flex justify-center pb-5">
+              <div className="w-[85%] h-max m-1 p-5 rounded-lg bg-white border border-[#d1c7c7] shadow-md shadow-[#978d8d]">
+                <div className="flex">
+                  <img
+                    className="border-2 border-[#aca7a7] rounded-xl p-1"
+                    width="50px"
+                    height="80px"
+                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                    alt="Profile"
+                  />
+                  <div className="ml-6">
+                    <p className="text-lg font-bold">{item.title}</p>
+                    <div className="flex text-sm font-semibold">
+                      <p>Hassan Ahmed | </p>
+                      <p>{newDate.toLocaleString()}</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-6 ml-3 text-md font-sans">
+                  <p>{item.description}</p>
+                  <div className="flex gap-3 mt-3">
+                    <button
+                      onClick={() => deleteBlog(index, item.docId)}
+                      className="text-[#0079ff] font-bold"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      onClick={() => editBlog(item)}
+                      className="text-[#0079ff] font-bold"
+                    >
+                      Edit
+                    </button>
                   </div>
                 </div>
               </div>
-              <div className="mt-6 ml-3 text-md font-sans">
-                <p>{item.description}</p>
-                <div className="flex gap-3 mt-3">
-                  <button
-                    onClick={() => deleteBlog(index, item.docId)} // Pass the docId for deletion
-                    className="text-[#0079ff] font-bold"
-                  >
-                    Delete
-                  </button>
-                  <button className="text-[#0079ff] font-bold">
-                    Edit
-                  </button>
-                </div>
-              </div>
             </div>
-          </div>
-        ))
+          );
+        })
       ) : (
-        <h1>No Blogs Available</h1>
+        <h1>Posting Blogs</h1>
       )}
     </>
   );

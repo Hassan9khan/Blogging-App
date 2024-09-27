@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Navbar = (props) => {
+const Navbar = ({title , link , login , register}) => {
   return (
     <>
       <div className="flex justify-around p-3 text-white font-bold text-lg bg-[#0079ff]">
@@ -9,14 +9,16 @@ const Navbar = (props) => {
             <h1>Personal Blogging App</h1>
         </div>
         <div>
-            <h1>{props.link}</h1>
+            <h1>{link}</h1>
         </div>
-        {/* <div>
-            <h1>  <Link to={login}>Login</Link></h1>
-        </div> */}
+        <div>
+            <h1>  <Link to="/">{login}</Link></h1>
+            <h1>  <Link to="register">{register}</Link></h1>
+        </div>
+            
       </div>
       <div className="p-5 pl-28 font-bold text-3xl bg-[#fff]">
-        <h1>{props.title}</h1>
+        <h1>{title}</h1>
       </div>
       {/* <div className="p-5 mb-4 font-bold text-3xl">
         <h1>{props.heading}</h1>

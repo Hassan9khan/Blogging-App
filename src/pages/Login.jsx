@@ -32,11 +32,10 @@ const Login = () => {
       });
   };
 
-  const registerUser = "/registerUser";
 
   return (
     <>
-      <Navbar title="Login" link="Register" />
+      <Navbar title="Login" register="Register" />
       <div className="flex justify-center bg-[#f0f0f0] mt-16">
         <div className="w-[18rem] h-max m-3 pb-5 text-center rounded-lg bg-white border border-[#d1c7c7]">
           <h1 className="text-[#0079ff] text-2xl font-bold p-2 m-4">
