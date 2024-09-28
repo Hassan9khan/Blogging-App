@@ -33,6 +33,7 @@ const Dashboard = () => {
         title: data.title,
         description: data.description,
         uid: auth.currentUser.uid,
+        displayName: displayName,
         // docId: docRef.id,
 
         createdAt: newDate.toLocaleString(),
@@ -106,7 +107,8 @@ const Dashboard = () => {
       onAuthStateChanged(auth, (user) => {
         if (user) {
           const uid = user.uid;
-          console.log(uid, user);
+          console.log(uid);
+          console.log(user);
         } else {
           navigate("/login");
           console.log("user is not logged in");
@@ -116,15 +118,33 @@ const Dashboard = () => {
     checkState();
   }, []);
 
+    // async function getData() {
+    //   // if(auth.currentUser.uid === blogs[0].uid) {
+    //     const querySnapshot = await getDocs(collection(db, "blogs"));
+    //   querySnapshot.forEach((doc) => {
+    //     blogs.push({...doc.data() , docId:doc.id})
+    //     console.log(doc.id);
+    //   console.log(blogs[0].uid);
+    //   console.log(auth.currentUser.uid);
+      
+    //     setBlogs([...blogs])
+    //   });
+    //   // }
+    // }
     async function getData() {
       const querySnapshot = await getDocs(collection(db, "blogs"));
+      const fetchedBlogs = []; 
+      
       querySnapshot.forEach((doc) => {
-        blogs.push({...doc.data() , docId:doc.id})
-        console.log(doc.id);
-      console.log(blogs);
-        setBlogs([...blogs])
+        fetchedBlogs.push({ ...doc.data(), docId: doc.id });
       });
+      // console.log(fetchedBlogs[0].uid);
+      // console.log(auth.currentUser.uid);  
+      const userBlogs = fetchedBlogs.filter((blog) => blog.uid === auth.currentUser.uid);
+    
+      setBlogs(userBlogs);
     }
+    
 
     useEffect(() => {
     getData()
@@ -168,13 +188,10 @@ const Dashboard = () => {
       </div>
 
       {/* <h1 className="text-3xl font-bold m-6">My Blogs</h1> */}
-      {blogs.length > 0 ? (
-        <h1 className="text-3xl font-bold m-6">My Blogs</h1>
-      ) : (
-        <h1 className="text-3xl font-bold m-6">No Blogs Avaliable</h1>
-      )}
 
-      <ul className="flex flex-col-reverse">
+      {blogs.length > 0 ? <h1 className="text-3xl font-bold m-6">My Blogs</h1> : <h1 className="text-3xl font-bold m-6">No Blogs Avaliable</h1>}
+
+       <ul className="flex flex-col-reverse">
       {blogs.length > 0 &&
         blogs.map((item, index) => {
           return (
@@ -217,7 +234,7 @@ const Dashboard = () => {
             </div>
           );
         })}
-      </ul>
+      </ul> 
     </>
   );
 };
