@@ -28,7 +28,7 @@ const Register = () => {
           displayName: `${data.firstname} ${data.lastname}`
         }).then(() => {
         console.log( user);
-        navigate('/')
+        navigate('/login')
         }).catch((error) => {
           console.log(error);
           
@@ -57,7 +57,7 @@ const Register = () => {
 
   return (
     <>
-      <Navbar title="Register"  login="login"/>
+      <Navbar title="Register"  login="Login"/>
       <div className="flex justify-center bg-[#f0f0f0] ">
         <div className="w-[18rem] h-max m-3 pb-5 text-center rounded-lg bg-white border border-[#d1c7c7] mt-8">
           <h1 className="text-[#0079ff] text-2xl font-bold p-2 m-4">

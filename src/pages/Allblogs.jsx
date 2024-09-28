@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useState } from "react";
+import Navbar from "../components/Navbar";
 
 const Allblogs = () => {
-  return (
-    <div>Allblogs</div>
-  )
-}
 
-export default Allblogs
+
+  const [blogs, setBlogs] = useState([]);
+
+  return (
+    <>
+      <Navbar title="All Blogs"/>
+    </>
+  );
+};
+
+export default Allblogs;

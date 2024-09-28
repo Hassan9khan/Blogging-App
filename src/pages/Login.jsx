@@ -7,6 +7,12 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   // React Hook Form
+
+  const saveUserName = (displayName) => {
+    localStorage.setItem('displayName', displayName);
+    
+  }
+
   const {
     register,
     handleSubmit,
@@ -22,8 +28,8 @@ const Login = () => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user);
-        navigate('/dashboard')
+        saveUserName(user.displayName);
+        navigate('/')
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -61,7 +67,7 @@ const Login = () => {
               type="submit"
               className="btn btn-sm  pb-1 px-[30%] rounded-xl bg-[#0079ff] text-white  "
             >
-              Signup
+              Signin
             </button>
           </form>
         </div>
