@@ -42,6 +42,7 @@ const Dashboard = () => {
         description: data.description,
       docId: docRef.id,
       };
+      data.title=""
 
       setBlogs([...blogs, newBlog]);
       // setBlogs([...blogs])
@@ -115,9 +116,7 @@ const Dashboard = () => {
     checkState();
   }, []);
 
-  // useEffect(() => {
     async function getData() {
-      // const [ data , setData] = []
       const querySnapshot = await getDocs(collection(db, "blogs"));
       querySnapshot.forEach((doc) => {
         blogs.push({...doc.data() , docId:doc.id})
@@ -126,9 +125,8 @@ const Dashboard = () => {
         setBlogs([...blogs])
       });
     }
-    // getData()
-  // } , [])
-  useEffect(() => {
+
+    useEffect(() => {
     getData()
   } , [])
 
@@ -176,11 +174,12 @@ const Dashboard = () => {
         <h1 className="text-3xl font-bold m-6">No Blogs Avaliable</h1>
       )}
 
+      <ul className="flex flex-col-reverse">
       {blogs.length > 0 &&
         blogs.map((item, index) => {
           return (
             <div key={index} className="flex justify-center pb-5">
-              <div className="w-[85%] h-max m-1 p-5 rounded-lg bg-white border border-[#d1c7c7] shadow-md shadow-[#978d8d]">
+              <li className="w-[85%] h-max m-1 p-5 rounded-lg bg-white border border-[#d1c7c7] shadow-md shadow-[#978d8d]">
                 <div className="flex">
                   <img
                     className="border-2 border-[#aca7a7] rounded-xl p-1"
@@ -214,10 +213,11 @@ const Dashboard = () => {
                     </button>
                   </div>
                 </div>
-              </div>
+              </li>
             </div>
           );
         })}
+      </ul>
     </>
   );
 };
