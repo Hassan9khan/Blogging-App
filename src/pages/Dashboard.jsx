@@ -140,9 +140,11 @@ const Dashboard = () => {
       });
       // console.log(fetchedBlogs[0].uid);
       // console.log(auth.currentUser.uid);  
+      console.log(fetchedBlogs[0].displayName);  
       const userBlogs = fetchedBlogs.filter((blog) => blog.uid === auth.currentUser.uid);
     
-      setBlogs(userBlogs);
+      const name = fetchedBlogs[0].displayName
+      setBlogs(userBlogs , name);
     }
     
 
@@ -196,7 +198,7 @@ const Dashboard = () => {
         blogs.map((item, index) => {
           return (
             <div key={index} className="flex justify-center pb-5">
-              <li className="w-[85%] h-max m-1 p-5 rounded-lg bg-white border border-[#d1c7c7] shadow-md shadow-[#978d8d]">
+              <li className="w-[85%] h-fit m-1 p-5 rounded-lg bg-white border border-[#d1c7c7] shadow-md shadow-[#978d8d]">
                 <div className="flex">
                   <img
                     className="border-2 border-[#aca7a7] rounded-xl p-1"

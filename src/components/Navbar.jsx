@@ -46,7 +46,7 @@ const Navbar = ({ title, link, login, register , profile }) => {
           </div>
           <div>
           <h1 className="text-md font-normal">
-            { (title === "Dashboard" || title === "Profile" || title === "All Blogs" )  && <button onClick={logoutUser}>Logout</button>}
+            { (title === "Dashboard" || title === "Profile" || title === "All Blogs" || title === "All From" )  && <button onClick={logoutUser}>Logout</button>}
           </h1>
           </div>
           {/* <div>
@@ -55,7 +55,7 @@ const Navbar = ({ title, link, login, register , profile }) => {
           </h1>
           </div> */}
             <div> 
-         { (title === "Dashboard" || title === "Profile" || title === "All Blogs")   &&   (
+         { (title === "Dashboard" || title === "Profile" || title === "All Blogs" ||title  === "All From" )   &&   (
                 <div className="dropdown dropdown-end">
                   <div tabIndex={0} role="button">
                     <IoEllipsisVertical />
@@ -68,7 +68,7 @@ const Navbar = ({ title, link, login, register , profile }) => {
                       <Link to="/profile">Profile</Link>
                     </li>
                     <li>
-                      <Link to="/allblogs">Allblogs</Link>
+                      <Link to="/allblogs">All Blogs</Link>
                     </li>
                     <li>
                       <Link to="/">Dashboard</Link>

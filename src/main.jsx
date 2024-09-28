@@ -9,6 +9,7 @@ import Register from "./pages/Register.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Allblogs from "./pages/Allblogs.jsx";
 import Profile from "./pages/Profile.jsx";
+import Userblogs from "./pages/Userblogs.jsx";
 
 const router = createBrowserRouter([
   {
@@ -36,9 +37,13 @@ const router = createBrowserRouter([
         element: <Profile />,
       },
       {
+        path: "userblogs",
+        element: <Userblogs />,
+      },
+      {
         path: "*",
-        element: <h1>Not Found</h1>
-      }
+        element: <h1>Not Found</h1>,
+      },
     ],
   },
 ]);

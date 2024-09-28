@@ -11,12 +11,12 @@ const Allblogs = () => {
   const displayName = localStorage.getItem("displayName");
   const newDate = new Date();
 
+  const [display , setDisplay ] = useState([])
   async function getData() {
     const querySnapshot = await getDocs(collection(db, "blogs"));
     querySnapshot.forEach((doc) => {
       blogs.push({...doc.data() , docId:doc.id})
-      console.log(doc.id);
-    console.log(blogs);
+    
       setBlogs([...blogs])
     });
   }
@@ -45,26 +45,25 @@ const Allblogs = () => {
                   <div className="ml-6">
                     <p className="text-lg font-bold">{item.title}</p>
                     <div className="flex text-sm font-semibold">
-                      <p>{displayName} | </p>
-                      <p>| {newDate.toLocaleString()}</p>
+                        <p>{item.displayName} | </p>
+                        <p>| {item.createdAt}</p>
                     </div>
                   </div>
                 </div>
                 <div className="mt-6 ml-3 text-md font-sans">
                   <p>{item.description}</p>
-                  <div className="flex gap-3 mt-3">
+                  <div className="flex gap-3 mt-10">
                     <button
-                      onClick={() => deleteBlog(index, item.docId)}
                       className="text-[#0079ff] font-bold"
                     >
-                      Delete
+                  see all blogs from this user
                     </button>
-                    <button
+                    {/* <button
                       onClick={() => editBlog(item)}
                       className="text-[#0079ff] font-bold"
                     >
                       Edit
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </li>
