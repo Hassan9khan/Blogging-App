@@ -95,7 +95,7 @@ const Dashboard = () => {
 
   // On Auth State
   useEffect(() => {
-    function checktState() {
+    function checkState() {
       onAuthStateChanged(auth, (user) => {
         if (user) {
           const uid = user.uid;
