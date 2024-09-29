@@ -9,7 +9,6 @@ const Userblogs = () => {
   const navigate = useNavigate();
   const displayName = localStorage.getItem("displayName");
 
-
   async function getData() {
     const querySnapshot = await getDocs(collection(db, "blogs"));
     const fetchedBlogs = [];
@@ -17,8 +16,6 @@ const Userblogs = () => {
     querySnapshot.forEach((doc) => {
       fetchedBlogs.push({ ...doc.data(), docId: doc.id });
     });
-    // console.log(fetchedBlogs[0].uid);
-    // console.log(auth.currentUser.uid);
     console.log(fetchedBlogs[0].displayName);
     const userBlogs = fetchedBlogs.filter(
       (blog) => blog.uid === auth.currentUser.uid
@@ -31,8 +28,7 @@ const Userblogs = () => {
 
   return (
     <>
-      {/* <button onClick={backToAllBlogs}>Back to All Blogs</button> */}
-      <Navbar title={`All From ${displayName}`} button="< Back to all blogs"/>
+      <Navbar title={`All From ${displayName}`} button="< Back to all blogs" />
 
       <div className="flex justify-around m-2">
         <div>
@@ -65,18 +61,6 @@ const Userblogs = () => {
                         <div className="mt-6 ml-3 text-md font-sans">
                           <p>{item.description}</p>
                           <div className="flex gap-3 mt-10">
-                            {/* <button
-                        onClick={nextPage}
-                        className="text-[#0079ff] font-bold"
-                      >
-                        see all blogs from this user
-                      </button> */}
-                            {/* <button
-                      onClick={() => editBlog(item)}
-                      className="text-[#0079ff] font-bold"
-                    >
-                      Edit
-                    </button> */}
                           </div>
                         </div>
                       </li>

@@ -1,8 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {  createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../config/config";
 
 const Register = () => {
@@ -14,11 +14,10 @@ const Register = () => {
     formState: { errors },
   } = useForm();
 
-  //Use Navigate
   const navigate = useNavigate()
 
-  // Register New User
 
+  // Register New User
   const onSubmit = (data) => {
 
     createUserWithEmailAndPassword(auth, data.email, data.password)
@@ -41,19 +40,6 @@ const Register = () => {
       });
   };
 
-  // const onSubmit = async (data) => {
-  //   try {
-  //     const userCredential = await createUserWithEmailAndPassword(
-  //       auth,
-  //       data.email,
-  //       data.password
-  //     );
-  //     const user = userCredential.user;
-  //     console.log("User registered:", user);
-  //   } catch (error) {
-  //     console.error("Error registering user:", error.message);
-  //   }
-  // };
 
   return (
     <>

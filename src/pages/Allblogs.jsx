@@ -65,12 +65,6 @@ const Allblogs = () => {
                       >
                         see all blogs from this user
                       </button>
-                      {/* <button
-                      onClick={() => editBlog(item)}
-                      className="text-[#0079ff] font-bold"
-                    >
-                      Edit
-                    </button> */}
                     </div>
                   </div>
                 </li>

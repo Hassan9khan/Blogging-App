@@ -26,7 +26,7 @@ const Dashboard = () => {
   const [blogs, setBlogs] = useState([]);
   const navigate = useNavigate();
 
-  // Function to handle new blog submission
+  // Add Data to Firebase
   const onSubmit = async (data) => {
     try {
       const docRef = await addDoc(collection(db, "blogs"), {
@@ -34,29 +34,24 @@ const Dashboard = () => {
         description: data.description,
         uid: auth.currentUser.uid,
         displayName: displayName,
-        // docId: docRef.id,
-
         createdAt: newDate.toLocaleString(),
       });
       const newBlog = {
         title: data.title,
         description: data.description,
-      docId: docRef.id,
+        docId: docRef.id,
       };
-      data.title=""
+      data.title = "";
 
       setBlogs([...blogs, newBlog]);
-      // setBlogs([...blogs])
       console.log("Document written with ID: ", docRef.id);
-      // getData()
       console.log(auth.currentUser.uid);
-      
     } catch (error) {
       console.error("Error adding document: ", error);
     }
   };
 
-  // Function to delete a blog
+  // Delete Data from Firebase
   const deleteBlog = async (index, docId) => {
     console.log("Deleting blog at index", index);
     blogs.splice(index, 1);
@@ -71,25 +66,21 @@ const Dashboard = () => {
     }
   };
 
-  // Function to edit a blog
+  // Edit Data in Firebase
   const editBlog = async (item) => {
     const newTitle = prompt("Enter new title", item.title);
     const newDescription = prompt("Enter new description", item.description);
     if (newTitle && newDescription) {
       try {
         const blogRef = doc(db, "blogs", item.docId);
-        // Update the document in Firestore
         await updateDoc(blogRef, {
           title: newTitle,
           description: newDescription,
         });
-        
-
-        // Update the local state to reflect the changes
         setBlogs(
           blogs.map((blog) =>
             blog.docId === item.docId
-              ? { ...blog, title: newTitle, description: newDescription } // Update local state
+              ? { ...blog, title: newTitle, description: newDescription }
               : blog
           )
         );
@@ -102,8 +93,9 @@ const Dashboard = () => {
     }
   };
 
+  // On Auth State
   useEffect(() => {
-    function checkState() {
+    function checktState() {
       onAuthStateChanged(auth, (user) => {
         if (user) {
           const uid = user.uid;
@@ -118,39 +110,27 @@ const Dashboard = () => {
     checkState();
   }, []);
 
-    // async function getData() {
-    //   // if(auth.currentUser.uid === blogs[0].uid) {
-    //     const querySnapshot = await getDocs(collection(db, "blogs"));
-    //   querySnapshot.forEach((doc) => {
-    //     blogs.push({...doc.data() , docId:doc.id})
-    //     console.log(doc.id);
-    //   console.log(blogs[0].uid);
-    //   console.log(auth.currentUser.uid);
-      
-    //     setBlogs([...blogs])
-    //   });
-    //   // }
-    // }
-    async function getData() {
-      const querySnapshot = await getDocs(collection(db, "blogs"));
-      const fetchedBlogs = []; 
-      
-      querySnapshot.forEach((doc) => {
-        fetchedBlogs.push({ ...doc.data(), docId: doc.id });
-      });
-      // console.log(fetchedBlogs[0].uid);
-      // console.log(auth.currentUser.uid);  
-      console.log(fetchedBlogs[0].displayName);  
-      const userBlogs = fetchedBlogs.filter((blog) => blog.uid === auth.currentUser.uid);
-    
-      const name = fetchedBlogs[0].displayName
-      setBlogs(userBlogs , name);
-    }
-    
 
-    useEffect(() => {
-    getData()
-  } , [])
+  // Get Data From Firebase
+  async function getData() {
+    const querySnapshot = await getDocs(collection(db, "blogs"));
+    const fetchedBlogs = [];
+
+    querySnapshot.forEach((doc) => {
+      fetchedBlogs.push({ ...doc.data(), docId: doc.id });
+    });
+    console.log(fetchedBlogs[0].displayName);
+    const userBlogs = fetchedBlogs.filter(
+      (blog) => blog.uid === auth.currentUser.uid
+    );
+
+    const name = fetchedBlogs[0].displayName;
+    setBlogs(userBlogs, name);
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <>
@@ -189,54 +169,57 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* <h1 className="text-3xl font-bold m-6">My Blogs</h1> */}
 
-      {blogs.length > 0 ? <h1 className="text-3xl font-bold m-6">My Blogs</h1> : <h1 className="text-3xl font-bold m-6">No Blogs Avaliable</h1>}
+      {blogs.length > 0 ? (
+        <h1 className="text-3xl font-bold m-6">My Blogs</h1>
+      ) : (
+        <h1 className="text-3xl font-bold m-6">No Blogs Avaliable</h1>
+      )}
 
-       <ul className="flex flex-col-reverse">
-      {blogs.length > 0 &&
-        blogs.map((item, index) => {
-          return (
-            <div key={index} className="flex justify-center pb-5">
-              <li className="w-[85%] h-fit m-1 p-5 rounded-lg bg-white border border-[#d1c7c7] shadow-md shadow-[#978d8d]">
-                <div className="flex">
-                  <img
-                    className="border-2 border-[#aca7a7] rounded-xl p-1"
-                    width="50px"
-                    height="80px"
-                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                    alt="Profile"
-                  />
-                  <div className="ml-6">
-                    <p className="text-lg font-bold">{item.title}</p>
-                    <div className="flex text-sm font-semibold">
-                      <p>{displayName} | </p>
-                      <p>| {newDate.toLocaleDateString()}</p>
+      <ul className="flex flex-col-reverse">
+        {blogs.length > 0 &&
+          blogs.map((item, index) => {
+            return (
+              <div key={index} className="flex justify-center pb-5">
+                <li className="w-[85%] h-fit m-1 p-5 rounded-lg bg-white border border-[#d1c7c7] shadow-md shadow-[#978d8d]">
+                  <div className="flex">
+                    <img
+                      className="border-2 border-[#aca7a7] rounded-xl p-1"
+                      width="50px"
+                      height="80px"
+                      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                      alt="Profile"
+                    />
+                    <div className="ml-6">
+                      <p className="text-lg font-bold">{item.title}</p>
+                      <div className="flex text-sm font-semibold">
+                        <p>{displayName} | </p>
+                        <p>| {newDate.toLocaleDateString()}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="mt-6 ml-3 text-md font-sans">
-                  <p>{item.description}</p>
-                  <div className="flex gap-3 mt-3">
-                    <button
-                      onClick={() => deleteBlog(index, item.docId)}
-                      className="text-[#0079ff] font-bold"
-                    >
-                      Delete
-                    </button>
-                    <button
-                      onClick={() => editBlog(item)}
-                      className="text-[#0079ff] font-bold"
-                    >
-                      Edit
-                    </button>
+                  <div className="mt-6 ml-3 text-md font-sans">
+                    <p>{item.description}</p>
+                    <div className="flex gap-3 mt-3">
+                      <button
+                        onClick={() => deleteBlog(index, item.docId)}
+                        className="text-[#0079ff] font-bold"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={() => editBlog(item)}
+                        className="text-[#0079ff] font-bold"
+                      >
+                        Edit
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </li>
-            </div>
-          );
-        })}
-      </ul> 
+                </li>
+              </div>
+            );
+          })}
+      </ul>
     </>
   );
 };

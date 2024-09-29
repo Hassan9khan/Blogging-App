@@ -60,27 +60,6 @@ const Profile = () => {
     );
   };
 
-  // const changePass = () => {
-  //
-  // };
-
-  // const updateUserPassword = (newPassword) => {
-  //   const auth = getAuth();
-  //   const user = auth.currentUser.uid;
-
-  //   if (user) {
-  //     updatePassword(user, newPassword)
-  //       .then(() => {
-  //         console.log("Password updated successfully!");
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error updating password:", error);
-  //       });
-  //   } else {
-  //     console.log("No user is currently signed in.");
-  //   }
-  // };
-
   useEffect(() => {
     function checkState() {
       onAuthStateChanged(auth, (user) => {
@@ -105,15 +84,13 @@ const Profile = () => {
         <div className="w-[85%] h-[25rem] m-3 p-5 rounded-lg bg-white border border-[#d1c7c7] shadow-md shadow-[#978d8d]">
           <div className="flex">
             <div>
-            <img
-              className="border-2 border-[#aca7a7] rounded-xl p-1"
-              width="130px"
-              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-              alt="Profile"
-            />
+              <img
+                className="border-2 border-[#aca7a7] rounded-xl p-1"
+                width="130px"
+                src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                alt="Profile"
+              />
             </div>
-          
-            {/* <input type="file" className="file hidden" accept="image/*" placeholder={`${<FaPenSquare />}`} /> */}
             <div className="m-10">
               <p className="text-2xl font-bold">{displayName}</p>
               <p></p>
@@ -121,22 +98,23 @@ const Profile = () => {
           </div>
           <form onSubmit={onSubmit}>
             <div className="inline-block ml-7 mt-2">
-                <label
-                  htmlFor="fileInput"
-                  className="flex p-1  bg-[#007bff] text-white  rounded cursor-pointer "
-                >
-                  <FaPenSquare />
-                </label>
-                <input
-                  type="file"
-                  id="fileInput"
-                  className="file-input hidden "
-                  accept="image/*"
-                  // onChange={handleFileChange}
-                />
-              </div>
-              <button className="ml-2" type="submit">Submit</button>
-            </form>
+              <label
+                htmlFor="fileInput"
+                className="flex p-1  bg-[#007bff] text-white  rounded cursor-pointer "
+              >
+                <FaPenSquare />
+              </label>
+              <input
+                type="file"
+                id="fileInput"
+                className="file-input hidden "
+                accept="image/*"
+              />
+            </div>
+            <button className="ml-2" type="submit">
+              Submit
+            </button>
+          </form>
           <div className="mt-6 text-xl ml-3 text-md font-sans">
             <h1>Change Password</h1>
             <form onSubmit={handleSubmit(changePass)}>
@@ -147,20 +125,6 @@ const Profile = () => {
                 required
                 {...register("email")}
               />
-              {/* <input
-                type="password"
-                placeholder="New Password"
-                className="input input-bordered input-secondary mt-6 w-full max-w-[100%]"
-                required
-                {...register("newPassword")}
-              /> */}
-              {/* <input
-                type="password"
-                placeholder="Repeat Password"
-                className="input input-bordered input-secondary mt-6 w-full max-w-[100%]"
-                required
-                {...register("repeatPassword")}
-              /> */}
               <button
                 className="mt-5 btn bg-[#0079ff] text-white hover:bg-[#0079ff]"
                 type="submit"
