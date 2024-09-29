@@ -211,7 +211,7 @@ const Dashboard = () => {
                     <p className="text-lg font-bold">{item.title}</p>
                     <div className="flex text-sm font-semibold">
                       <p>{displayName} | </p>
-                      <p>| {newDate.toLocaleString()}</p>
+                      <p>| {newDate.toLocaleDateString()}</p>
                     </div>
                   </div>
                 </div>

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { IoEllipsisVertical } from "react-icons/io5";
 
-const Navbar = ({ title, link, login, register , profile }) => {
+const Navbar = ({ title, link, login, register , profile , button  }) => {
 
   const navigate = useNavigate()
 
@@ -15,6 +15,10 @@ const Navbar = ({ title, link, login, register , profile }) => {
     }).catch((error) => {
       console.log(error);
     });
+  }
+
+  function backToAllBlogs() {
+    navigate("/allblogs");
   }
 
 
@@ -46,7 +50,7 @@ const Navbar = ({ title, link, login, register , profile }) => {
           </div>
           <div>
           <h1 className="text-md font-normal">
-            { (title === "Dashboard" || title === "Profile" || title === "All Blogs" || title === "All From" )  && <button onClick={logoutUser}>Logout</button>}
+            { (title === "Dashboard" || title === "Profile" || title === "All Blogs" || title.startsWith(`All From `)  )  && <button onClick={logoutUser}>Logout</button>}
           </h1>
           </div>
           {/* <div>
@@ -55,7 +59,7 @@ const Navbar = ({ title, link, login, register , profile }) => {
           </h1>
           </div> */}
             <div> 
-         { (title === "Dashboard" || title === "Profile" || title === "All Blogs" ||title  === "All From" )   &&   (
+         { (title === "Dashboard" || title === "Profile" || title === "All Blogs" ||title.startsWith(`All From `) )   &&   (
                 <div className="dropdown dropdown-end">
                   <div tabIndex={0} role="button">
                     <IoEllipsisVertical />
@@ -82,8 +86,9 @@ const Navbar = ({ title, link, login, register , profile }) => {
         </div>
       </div>
 
-      <div className="p-5 pl-28 font-bold text-3xl bg-[#fff]">
+      <div className="flex justify-between p-5 pl-28 font-bold text-3xl bg-[#fff]">
         <h1>{title}</h1>
+        {title.startsWith(`All From `) && <button onClick={backToAllBlogs} className="btn btn-link no-underline text-2xl">{button}</button> }
       </div>
       {/* <div className="p-5 mb-4 font-bold text-3xl">
         <h1>{props.heading}</h1>
