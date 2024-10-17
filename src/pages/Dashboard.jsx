@@ -14,17 +14,17 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  const displayName = localStorage.getItem("displayName");
-  // React Hook Form
+  1  // React Hook Form
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-
+  
   const newDate = new Date();
   const [blogs, setBlogs] = useState([]);
   const navigate = useNavigate();
+  const displayName = localStorage.getItem("displayName");
 
   // Add Data to Firebase
   const onSubmit = async (data) => {

@@ -16,7 +16,8 @@ const Userblogs = () => {
     querySnapshot.forEach((doc) => {
       fetchedBlogs.push({ ...doc.data(), docId: doc.id });
     });
-    // console.log(fetchedBlogs[0].displayName);
+    // console.log(fetchedBlogs[0].displayName);npm run dev
+    
     const userBlogs = fetchedBlogs.filter(
       (blog) => blog.uid === auth.currentUser.uid
     );
